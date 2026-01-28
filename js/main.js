@@ -1,69 +1,62 @@
-// ==============================
-// NEURAVOX — Site Interactions
-// ==============================
-
 (function() {
   'use strict';
 
-  // --- Navbar scroll effect ---
+  // --- Navbar scroll ---
   var nav = document.getElementById('nav');
-  var lastScroll = 0;
-
   window.addEventListener('scroll', function() {
-    var scrollY = window.pageYOffset || document.documentElement.scrollTop;
-    if (scrollY > 40) {
-      nav.classList.add('scrolled');
-    } else {
-      nav.classList.remove('scrolled');
-    }
-    lastScroll = scrollY;
+    nav.classList.toggle('scrolled', window.pageYOffset > 40);
   });
 
-  // --- Mobile nav toggle ---
+  // --- Mobile nav ---
   var toggle = document.getElementById('navToggle');
   var links = document.getElementById('navLinks');
-
   if (toggle && links) {
-    toggle.addEventListener('click', function() {
-      links.classList.toggle('open');
-    });
-
-    // Close on link click
+    toggle.addEventListener('click', function() { links.classList.toggle('open'); });
     links.querySelectorAll('a').forEach(function(a) {
-      a.addEventListener('click', function() {
-        links.classList.remove('open');
-      });
+      a.addEventListener('click', function() { links.classList.remove('open'); });
     });
   }
 
-  // --- Scroll reveal ---
-  var reveals = document.querySelectorAll('.reveal');
-
-  function checkReveal() {
-    var trigger = window.innerHeight * 0.88;
-    reveals.forEach(function(el) {
-      var top = el.getBoundingClientRect().top;
-      if (top < trigger) {
-        el.classList.add('visible');
+  // --- Scroll reveal with stagger ---
+  var reveals = document.querySelectorAll('.reveal, .reveal-stagger');
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
       }
     });
-  }
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
 
-  window.addEventListener('scroll', checkReveal);
-  window.addEventListener('load', checkReveal);
-  checkReveal();
+  reveals.forEach(function(el) { observer.observe(el); });
 
-  // --- Smooth anchor scrolling ---
+  // --- Smooth anchors ---
   document.querySelectorAll('a[href^="#"]').forEach(function(a) {
     a.addEventListener('click', function(e) {
       var target = document.querySelector(this.getAttribute('href'));
       if (target) {
         e.preventDefault();
-        var offset = nav.offsetHeight + 20;
-        var top = target.getBoundingClientRect().top + window.pageYOffset - offset;
+        var top = target.getBoundingClientRect().top + window.pageYOffset - (nav.offsetHeight + 20);
         window.scrollTo({ top: top, behavior: 'smooth' });
       }
     });
   });
+
+  // --- Cursor glow on hero ---
+  var hero = document.querySelector('.hero');
+  if (hero) {
+    var glow = document.createElement('div');
+    glow.style.cssText = 'position:absolute;width:600px;height:600px;border-radius:50%;pointer-events:none;z-index:1;' +
+      'background:radial-gradient(circle,rgba(0,168,255,0.06) 0%,transparent 70%);transition:transform 0.3s ease-out,opacity 0.3s;opacity:0;';
+    hero.appendChild(glow);
+
+    hero.addEventListener('mousemove', function(e) {
+      var rect = hero.getBoundingClientRect();
+      glow.style.transform = 'translate(' + (e.clientX - rect.left - 300) + 'px,' + (e.clientY - rect.top - 300) + 'px)';
+      glow.style.opacity = '1';
+    });
+    hero.addEventListener('mouseleave', function() {
+      glow.style.opacity = '0';
+    });
+  }
 
 })();
