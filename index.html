@@ -4,9 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Neuravox — AI-Powered 3D Generation</title>
-  <meta name="description" content="From reference to reality. Neuravox transforms 2D concepts into production-ready 3D models and animations using proprietary neural architecture.">
+  <meta name="description" content="Neuravox transforms 2D references into production-ready 3D models using proprietary neural architecture.">
   <link rel="stylesheet" href="css/styles.css">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='40' fill='%2300a8ff'/></svg>">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='40' fill='%232d8cf0'/></svg>">
   <script type="importmap">
   {
     "imports": {
@@ -15,142 +15,10 @@
     }
   }
   </script>
-  <style>
-    .viewer-canvas {
-      width: 100%;
-      height: 100%;
-      display: block;
-      cursor: grab;
-    }
-    .viewer-canvas:active { cursor: grabbing; }
-
-    .showcase-pair {
-      display: grid;
-      grid-template-columns: 1fr auto 1fr;
-      gap: 24px;
-      align-items: center;
-      margin-bottom: 40px;
-    }
-    .showcase-pair .showcase-card-body { min-height: 320px; }
-    .showcase-pair .showcase-card-body img {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-      position: absolute;
-      inset: 0;
-      padding: 16px;
-    }
-
-    .showcase-tabs {
-      display: flex;
-      gap: 6px;
-      margin-bottom: 40px;
-    }
-    .showcase-tab {
-      padding: 8px 18px;
-      border: 1px solid var(--border);
-      border-radius: 4px;
-      background: transparent;
-      color: var(--text-muted);
-      font-size: 12px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-    .showcase-tab:hover { border-color: var(--border-light); color: var(--text); }
-    .showcase-tab.active {
-      border-color: var(--accent);
-      color: var(--accent);
-      background: var(--accent-subtle);
-    }
-    .showcase-pair-wrapper { display: none; }
-    .showcase-pair-wrapper.active { display: block; }
-
-    .video-card-body video {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      position: absolute;
-      inset: 0;
-    }
-
-    .gallery-grid-new {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 16px;
-    }
-    .gallery-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      overflow: hidden;
-      transition: border-color 0.3s;
-    }
-    .gallery-card:hover { border-color: var(--border-light); }
-    .gallery-card-viewer {
-      height: 320px;
-      position: relative;
-      background: var(--bg);
-    }
-    .gallery-card-info {
-      padding: 16px 20px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      border-top: 1px solid var(--border);
-    }
-    .gallery-card-title {
-      font-family: var(--font-display);
-      font-size: 14px;
-      font-weight: 600;
-    }
-    .gallery-card-tag {
-      font-size: 10px;
-      font-weight: 600;
-      padding: 3px 10px;
-      border: 1px solid var(--border);
-      border-radius: 4px;
-      color: var(--text-muted);
-    }
-    .gallery-card-ref {
-      height: 180px;
-      position: relative;
-      border-top: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: var(--bg);
-    }
-    .gallery-card-ref img {
-      max-height: 100%;
-      max-width: 100%;
-      object-fit: contain;
-      padding: 12px;
-    }
-    .gallery-card-ref-label {
-      position: absolute;
-      top: 8px;
-      left: 12px;
-      font-size: 10px;
-      font-weight: 600;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      color: var(--text-muted);
-    }
-
-    @media (max-width: 1024px) {
-      .showcase-pair { grid-template-columns: 1fr; }
-      .showcase-pair .showcase-arrow { transform: rotate(90deg); padding: 12px 0; }
-    }
-    @media (max-width: 768px) {
-      .gallery-grid-new { grid-template-columns: 1fr; }
-      .showcase-tabs { flex-wrap: wrap; }
-    }
-  </style>
 </head>
 <body>
 
-<!-- ======== NAVIGATION ======== -->
+<!-- NAV -->
 <nav class="nav" id="nav">
   <div class="nav-inner">
     <a href="#" class="nav-logo">
@@ -158,522 +26,350 @@
       Neuravox
     </a>
     <ul class="nav-links" id="navLinks">
-      <li><a href="#about">Vision</a></li>
+      <li><a href="#about">About</a></li>
       <li><a href="#showcase">Technology</a></li>
       <li><a href="#gallery">Gallery</a></li>
       <li><a href="#roadmap">Roadmap</a></li>
-      <li><a href="#future">Impact</a></li>
     </ul>
-    <a href="#roadmap" class="nav-cta">Early Access</a>
+    <a href="#roadmap" class="nav-cta">Invest</a>
     <button class="nav-toggle" id="navToggle" aria-label="Menu">
       <span></span><span></span><span></span>
     </button>
   </div>
 </nav>
 
-<!-- ======== HERO ======== -->
+<!-- HERO — split layout with 3D viewer -->
 <section class="hero" id="hero">
-  <div class="grid-bg"></div>
-  <div class="hero-content">
-    <div class="hero-badge">
-      <span class="pulse"></span>
-      Seeking Investment
+  <div class="hero-split">
+    <div class="hero-left">
+      <div class="hero-tag">Seeking Investment</div>
+      <h1>We turn<br>images into<br><span class="h1-accent">3D models.</span></h1>
+      <p class="hero-p">
+        One year of closed R&D. A neural system that generates
+        production-ready 3D assets from a single reference photograph.
+        Not a concept — a working prototype.
+      </p>
+      <div class="hero-actions">
+        <a href="#showcase" class="btn-fill">See Results</a>
+        <a href="#roadmap" class="btn-outline">Roadmap</a>
+      </div>
+      <div class="hero-metrics">
+        <div class="hm"><span class="hm-val">&lt;90s</span><span class="hm-label">per asset</span></div>
+        <div class="hm-sep"></div>
+        <div class="hm"><span class="hm-val">12M+</span><span class="hm-label">training samples</span></div>
+        <div class="hm-sep"></div>
+        <div class="hm"><span class="hm-val">94.2%</span><span class="hm-label">topology accuracy</span></div>
+      </div>
     </div>
-    <h1>One image in.<br><span class="accent">Full 3D out.</span></h1>
-    <p class="hero-sub">
-      We spent a year building an AI that turns a single reference image into
-      a production-ready 3D model. The technology works. We're looking for
-      investment to bring it to market.
-    </p>
-    <div class="hero-ctas">
-      <a href="#showcase" class="btn-primary">
-        See the Results
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-      </a>
-      <a href="#roadmap" class="btn-secondary">View Roadmap</a>
+    <div class="hero-right">
+      <div class="hero-viewer" id="hero-viewer"></div>
+      <div class="hero-viewer-label">
+        <span class="hvl-dot"></span>
+        Live 3D — generated from single image
+      </div>
     </div>
   </div>
 </section>
 
-<!-- ======== ABOUT / VISION ======== -->
+<!-- ABOUT — editorial two-column -->
 <section class="about" id="about">
   <div class="container">
-    <div class="reveal">
-      <p class="section-label">Our Vision</p>
-      <h2 class="section-title">Built in silence.<br>Ready for investment.</h2>
-      <p class="section-desc">
-        For over a year, our team has been developing Neuravox behind closed doors —
-        a proprietary AI system that generates production-grade 3D models and animations
-        from a single 2D reference. Now, we're seeking the right partners to scale it.
-      </p>
-    </div>
-
-    <div class="about-grid">
-      <div class="reveal">
-        <p style="color: var(--text-secondary); line-height: 1.85; margin-bottom: 24px;">
-          Neuravox started in early 2025 as an internal research project. The founding team —
-          engineers and researchers with backgrounds in computer vision, generative AI, and
-          real-time graphics — set out to answer a fundamental question: can a neural network
+    <div class="about-top reveal">
+      <div class="about-top-left">
+        <span class="mono-tag">// ABOUT</span>
+        <h2>Built in silence for twelve months.</h2>
+      </div>
+      <div class="about-top-right">
+        <p>
+          Neuravox started in early 2025 as an internal research project.
+          Engineers with backgrounds in computer vision, generative AI, and
+          real-time graphics set out to answer a question: can a neural network
           learn to think in three dimensions from flat images alone?
         </p>
-        <p style="color: var(--text-secondary); line-height: 1.85; margin-bottom: 24px;">
-          After twelve months of closed development, the answer is yes. Our architecture
-          doesn't reconstruct depth maps or stitch point clouds — it infers volume, topology,
-          and articulation the way a sculptor reads form from a photograph. The output is
-          a fully rigged, textured, animation-ready 3D asset. No manual cleanup. No post-processing.
-        </p>
-        <p style="color: var(--text-secondary); line-height: 1.85; margin-bottom: 24px;">
-          Until now, this technology existed only inside our lab. Every model on this page
-          was generated by the system — not modeled by hand. What you see is what the AI produced.
-        </p>
-        <p style="color: var(--text-secondary); line-height: 1.85;">
-          To bring Neuravox from the lab to the public, we're launching a token that
-          funds the next phase of development: infrastructure scaling, API access, and
-          creator tools. Early holders gain priority access to the platform and a stake
-          in the ecosystem we're building. This isn't a promise — it's a working technology
-          looking for the right community to grow with.
-        </p>
-      </div>
-
-      <div class="reveal">
-        <div class="about-visual" id="hero-viewer" style="min-height: 380px;">
-          <!-- 3D model viewer for hero/about section -->
-        </div>
       </div>
     </div>
 
-    <div class="about-stats reveal">
-      <div class="stat-item">
-        <div class="stat-value">&lt;90s</div>
-        <div class="stat-label">Average generation time from single reference</div>
+    <div class="about-body reveal">
+      <div class="about-col">
+        <p>
+          After twelve months, the answer is yes. Our architecture
+          doesn't reconstruct depth maps or stitch point clouds — it infers
+          volume, topology, and articulation the way a sculptor reads form
+          from a photograph.
+        </p>
+        <p>
+          The output is a fully rigged, textured, animation-ready 3D asset.
+          No cleanup. No post-processing. Every model on this page was
+          generated by the system — not modeled by hand.
+        </p>
       </div>
-      <div class="stat-item">
-        <div class="stat-value">12M+</div>
-        <div class="stat-label">Training samples across diverse object categories</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-value">94.2%</div>
-        <div class="stat-label">Topology accuracy on benchmark evaluations</div>
+      <div class="about-col">
+        <p>
+          Until now, this technology existed only inside our lab. To bring
+          Neuravox from research to product, we're seeking investment to
+          fund infrastructure scaling, API development, and creator tools.
+        </p>
+        <p>
+          Early investors gain priority access to the platform. This isn't
+          a pitch deck — it's a working technology looking for the right
+          capital to scale.
+        </p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ======== TECHNOLOGY SHOWCASE ======== -->
+<!-- SHOWCASE — input/output comparison -->
 <section class="showcase" id="showcase">
   <div class="container">
-    <div class="showcase-header reveal">
-      <p class="section-label">Technology</p>
-      <h2 class="section-title">See it work</h2>
-      <p class="section-desc">
-        One reference image goes in. A fully realized 3D asset comes out —
-        rigged, textured, ready for production.
-      </p>
+    <div class="showcase-top reveal">
+      <span class="mono-tag">// TECHNOLOGY</span>
+      <h2>Reference in. 3D out.</h2>
     </div>
 
-    <!-- Tabs -->
     <div class="showcase-tabs reveal">
       <button class="showcase-tab active" data-tab="luffy">Luffy</button>
-      <button class="showcase-tab" data-tab="buzz">Buzz Lightyear</button>
-      <button class="showcase-tab" data-tab="goku">Goku Chibi</button>
-      <button class="showcase-tab" data-tab="mickey">Mickey Mouse</button>
+      <button class="showcase-tab" data-tab="buzz">Buzz</button>
+      <button class="showcase-tab" data-tab="goku">Goku</button>
+      <button class="showcase-tab" data-tab="mickey">Mickey</button>
     </div>
 
     <!-- Luffy -->
     <div class="showcase-pair-wrapper active" data-content="luffy">
-      <div class="showcase-pair reveal">
-        <div class="showcase-card">
-          <div class="showcase-card-header">
-            <span class="showcase-card-tag">Input</span>
-            <span class="showcase-card-label">— Reference image</span>
-          </div>
-          <div class="showcase-card-body">
-            <img src="assets/images/luffy-ref.webp" alt="Luffy reference">
-          </div>
+      <div class="sc-compare reveal">
+        <div class="sc-side">
+          <div class="sc-label">INPUT — Reference</div>
+          <div class="sc-frame"><img src="assets/images/luffy-ref.webp" alt="Luffy reference"></div>
         </div>
-        <div class="showcase-arrow">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-            <path d="M5 12h14M12 5l7 7-7 7"/>
-          </svg>
-          <span>Neuravox AI</span>
+        <div class="sc-arrow">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </div>
-        <div class="showcase-card">
-          <div class="showcase-card-header">
-            <span class="showcase-card-tag">Output</span>
-            <span class="showcase-card-label">— Generated 3D model</span>
-          </div>
-          <div class="showcase-card-body">
-            <canvas class="viewer-canvas" id="viewer-luffy"></canvas>
-          </div>
+        <div class="sc-side">
+          <div class="sc-label">OUTPUT — 3D Model</div>
+          <div class="sc-frame"><canvas class="viewer-canvas" id="viewer-luffy"></canvas></div>
         </div>
       </div>
     </div>
 
     <!-- Buzz -->
     <div class="showcase-pair-wrapper" data-content="buzz">
-      <div class="showcase-pair reveal visible">
-        <div class="showcase-card">
-          <div class="showcase-card-header">
-            <span class="showcase-card-tag">Input</span>
-            <span class="showcase-card-label">— Reference image</span>
-          </div>
-          <div class="showcase-card-body">
-            <img src="assets/images/buzz-ref.jpg" alt="Buzz Lightyear reference">
-          </div>
+      <div class="sc-compare reveal visible">
+        <div class="sc-side">
+          <div class="sc-label">INPUT — Reference</div>
+          <div class="sc-frame"><img src="assets/images/buzz-ref.jpg" alt="Buzz reference"></div>
         </div>
-        <div class="showcase-arrow">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-            <path d="M5 12h14M12 5l7 7-7 7"/>
-          </svg>
-          <span>Neuravox AI</span>
+        <div class="sc-arrow">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </div>
-        <div class="showcase-card">
-          <div class="showcase-card-header">
-            <span class="showcase-card-tag">Output</span>
-            <span class="showcase-card-label">— Generated 3D model</span>
-          </div>
-          <div class="showcase-card-body">
-            <canvas class="viewer-canvas" id="viewer-buzz"></canvas>
-          </div>
+        <div class="sc-side">
+          <div class="sc-label">OUTPUT — 3D Model</div>
+          <div class="sc-frame"><canvas class="viewer-canvas" id="viewer-buzz"></canvas></div>
         </div>
       </div>
     </div>
 
     <!-- Goku -->
     <div class="showcase-pair-wrapper" data-content="goku">
-      <div class="showcase-pair reveal visible">
-        <div class="showcase-card">
-          <div class="showcase-card-header">
-            <span class="showcase-card-tag">Input</span>
-            <span class="showcase-card-label">— Reference image</span>
-          </div>
-          <div class="showcase-card-body">
-            <img src="assets/images/goku-ref.jpg" alt="Goku Chibi reference">
-          </div>
+      <div class="sc-compare reveal visible">
+        <div class="sc-side">
+          <div class="sc-label">INPUT — Reference</div>
+          <div class="sc-frame"><img src="assets/images/goku-ref.jpg" alt="Goku reference"></div>
         </div>
-        <div class="showcase-arrow">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-            <path d="M5 12h14M12 5l7 7-7 7"/>
-          </svg>
-          <span>Neuravox AI</span>
+        <div class="sc-arrow">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </div>
-        <div class="showcase-card">
-          <div class="showcase-card-header">
-            <span class="showcase-card-tag">Output</span>
-            <span class="showcase-card-label">— Generated 3D model</span>
-          </div>
-          <div class="showcase-card-body">
-            <canvas class="viewer-canvas" id="viewer-goku"></canvas>
-          </div>
+        <div class="sc-side">
+          <div class="sc-label">OUTPUT — 3D Model</div>
+          <div class="sc-frame"><canvas class="viewer-canvas" id="viewer-goku"></canvas></div>
         </div>
       </div>
     </div>
 
     <!-- Mickey -->
     <div class="showcase-pair-wrapper" data-content="mickey">
-      <div class="showcase-pair reveal visible">
-        <div class="showcase-card">
-          <div class="showcase-card-header">
-            <span class="showcase-card-tag">Input</span>
-            <span class="showcase-card-label">— Reference image</span>
-          </div>
-          <div class="showcase-card-body">
-            <img src="assets/images/mickey-ref.png" alt="Mickey Mouse reference">
-          </div>
+      <div class="sc-compare reveal visible">
+        <div class="sc-side">
+          <div class="sc-label">INPUT — Reference</div>
+          <div class="sc-frame"><img src="assets/images/mickey-ref.png" alt="Mickey reference"></div>
         </div>
-        <div class="showcase-arrow">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-            <path d="M5 12h14M12 5l7 7-7 7"/>
-          </svg>
-          <span>Neuravox AI</span>
+        <div class="sc-arrow">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </div>
-        <div class="showcase-card">
-          <div class="showcase-card-header">
-            <span class="showcase-card-tag">Output</span>
-            <span class="showcase-card-label">— Generated 3D model</span>
-          </div>
-          <div class="showcase-card-body">
-            <canvas class="viewer-canvas" id="viewer-mickey"></canvas>
-          </div>
+        <div class="sc-side">
+          <div class="sc-label">OUTPUT — 3D Model</div>
+          <div class="sc-frame"><canvas class="viewer-canvas" id="viewer-mickey"></canvas></div>
         </div>
       </div>
     </div>
 
-    <!-- Animation Videos -->
-    <p style="font-size: 12px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-muted); margin-top: 48px; margin-bottom: 24px;" class="reveal">Demo Videos</p>
-
-    <div class="showcase-videos reveal">
-      <div class="video-card">
-        <div class="video-card-body">
-          <video src="assets/videos/demo1.mp4" muted loop playsinline></video>
-        </div>
-        <div class="video-card-info">
-          <div class="video-card-title">Character Generation</div>
-          <div class="video-card-desc">Full 3D model from single 2D reference</div>
-        </div>
+    <!-- Videos row -->
+    <div class="vid-row reveal">
+      <div class="vid-item">
+        <div class="vid-wrap"><video src="assets/videos/demo1.mp4" muted loop playsinline></video></div>
+        <div class="vid-info">Character Generation</div>
       </div>
-
-      <div class="video-card">
-        <div class="video-card-body">
-          <video src="assets/videos/demo2.mp4" muted loop playsinline></video>
-        </div>
-        <div class="video-card-info">
-          <div class="video-card-title">Spatial Reconstruction</div>
-          <div class="video-card-desc">Real-time mesh generation and texturing</div>
-        </div>
+      <div class="vid-item">
+        <div class="vid-wrap"><video src="assets/videos/demo2.mp4" muted loop playsinline></video></div>
+        <div class="vid-info">Spatial Reconstruction</div>
       </div>
-
-      <div class="video-card">
-        <div class="video-card-body">
-          <video src="assets/videos/demo3.mp4" muted loop playsinline></video>
-        </div>
-        <div class="video-card-info">
-          <div class="video-card-title">Multi-angle Output</div>
-          <div class="video-card-desc">Complete 360-degree asset review</div>
-        </div>
+      <div class="vid-item">
+        <div class="vid-wrap"><video src="assets/videos/demo3.mp4" muted loop playsinline></video></div>
+        <div class="vid-info">Multi-angle Output</div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ======== GALLERY ======== -->
+<!-- GALLERY — 3D viewers grid -->
 <section class="gallery" id="gallery">
   <div class="container">
-    <div class="gallery-header reveal">
-      <p class="section-label">Gallery</p>
-      <h2 class="section-title">Output samples</h2>
-      <p class="section-desc">
-        Generated during our research phase. Every asset below was created
-        from a single reference image — no manual modeling.
-      </p>
+    <div class="gallery-top reveal">
+      <span class="mono-tag">// GALLERY</span>
+      <h2>Output samples</h2>
+      <p>Every asset below — generated from a single reference image. No manual modeling.</p>
     </div>
 
-    <div class="gallery-grid-new reveal">
-      <!-- Luffy -->
-      <div class="gallery-card">
-        <div class="gallery-card-viewer" id="gallery-luffy"></div>
-        <div class="gallery-card-info">
-          <span class="gallery-card-title">Luffy — One Piece</span>
-          <span class="gallery-card-tag">Character</span>
+    <div class="g-grid reveal">
+      <div class="g-card">
+        <div class="g-viewer" id="gallery-luffy"></div>
+        <div class="g-meta">
+          <span>Luffy — One Piece</span>
+          <span class="g-type">Character</span>
         </div>
-        <div class="gallery-card-ref">
-          <span class="gallery-card-ref-label">Reference Input</span>
-          <img src="assets/images/luffy-ref.webp" alt="Luffy reference">
-        </div>
-      </div>
-
-      <!-- Buzz -->
-      <div class="gallery-card">
-        <div class="gallery-card-viewer" id="gallery-buzz"></div>
-        <div class="gallery-card-info">
-          <span class="gallery-card-title">Buzz Lightyear — Toy Story</span>
-          <span class="gallery-card-tag">Character</span>
-        </div>
-        <div class="gallery-card-ref">
-          <span class="gallery-card-ref-label">Reference Input</span>
-          <img src="assets/images/buzz-ref.jpg" alt="Buzz reference">
+        <div class="g-ref">
+          <span class="g-ref-tag">REF</span>
+          <img src="assets/images/luffy-ref.webp" alt="Luffy ref">
         </div>
       </div>
-
-      <!-- Goku -->
-      <div class="gallery-card">
-        <div class="gallery-card-viewer" id="gallery-goku"></div>
-        <div class="gallery-card-info">
-          <span class="gallery-card-title">Goku Chibi — Dragon Ball</span>
-          <span class="gallery-card-tag">Stylized</span>
+      <div class="g-card">
+        <div class="g-viewer" id="gallery-buzz"></div>
+        <div class="g-meta">
+          <span>Buzz Lightyear — Toy Story</span>
+          <span class="g-type">Character</span>
         </div>
-        <div class="gallery-card-ref">
-          <span class="gallery-card-ref-label">Reference Input</span>
-          <img src="assets/images/goku-ref.jpg" alt="Goku reference">
+        <div class="g-ref">
+          <span class="g-ref-tag">REF</span>
+          <img src="assets/images/buzz-ref.jpg" alt="Buzz ref">
         </div>
       </div>
-
-      <!-- Mickey -->
-      <div class="gallery-card">
-        <div class="gallery-card-viewer" id="gallery-mickey"></div>
-        <div class="gallery-card-info">
-          <span class="gallery-card-title">Mickey Mouse — Disney</span>
-          <span class="gallery-card-tag">Iconic</span>
+      <div class="g-card">
+        <div class="g-viewer" id="gallery-goku"></div>
+        <div class="g-meta">
+          <span>Goku Chibi — Dragon Ball</span>
+          <span class="g-type">Stylized</span>
         </div>
-        <div class="gallery-card-ref">
-          <span class="gallery-card-ref-label">Reference Input</span>
-          <img src="assets/images/mickey-ref.png" alt="Mickey reference">
+        <div class="g-ref">
+          <span class="g-ref-tag">REF</span>
+          <img src="assets/images/goku-ref.jpg" alt="Goku ref">
+        </div>
+      </div>
+      <div class="g-card">
+        <div class="g-viewer" id="gallery-mickey"></div>
+        <div class="g-meta">
+          <span>Mickey Mouse — Disney</span>
+          <span class="g-type">Iconic</span>
+        </div>
+        <div class="g-ref">
+          <span class="g-ref-tag">REF</span>
+          <img src="assets/images/mickey-ref.png" alt="Mickey ref">
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ======== ROADMAP ======== -->
+<!-- ROADMAP -->
 <section class="roadmap" id="roadmap">
   <div class="container">
-    <div class="roadmap-header reveal">
-      <p class="section-label">Roadmap</p>
-      <h2 class="section-title">Where we're headed</h2>
-      <p class="section-desc">
-        One year of silent development. Now we're opening the doors
-        to the right investors and partners.
-      </p>
+    <div class="rm-top reveal">
+      <div class="rm-top-left">
+        <span class="mono-tag">// ROADMAP</span>
+        <h2>Where we're going</h2>
+      </div>
+      <p class="rm-top-right">One year of silent development. Now we're seeking the right investors to bring this to market.</p>
     </div>
 
-    <div class="timeline reveal">
-      <div class="timeline-item completed">
-        <div class="timeline-dot"></div>
-        <div class="timeline-phase">Phase 1 — Complete</div>
-        <div class="timeline-date">Q1 2025 — Q4 2025</div>
-        <div class="timeline-title">Internal R&D — 12 Months of Closed Development</div>
-        <div class="timeline-desc">
-          Core neural architecture designed and trained. Spatial inference engine
-          capable of generating rigged 3D meshes from single 2D inputs. Internal
-          benchmark suite developed. First viable outputs across characters,
-          creatures, and hard-surface models. All work self-funded and private.
-        </div>
-        <div class="timeline-goals">
-          <span class="timeline-goal">Core AI architecture</span>
-          <span class="timeline-goal">Training pipeline (12M+ samples)</span>
-          <span class="timeline-goal">Mesh topology solver</span>
-          <span class="timeline-goal">Auto-rigging system</span>
-          <span class="timeline-goal">Internal benchmarks passed</span>
+    <div class="rm-grid reveal">
+      <div class="rm-item done">
+        <div class="rm-num">01</div>
+        <div class="rm-body">
+          <div class="rm-phase">Complete</div>
+          <div class="rm-date">Q1 2025 — Q4 2025</div>
+          <h3>Internal R&D</h3>
+          <p>Core neural architecture. Training pipeline with 12M+ samples. Mesh topology solver. Auto-rigging system. Internal benchmarks. All self-funded and private.</p>
         </div>
       </div>
-
-      <div class="timeline-item active">
-        <div class="timeline-dot"></div>
-        <div class="timeline-phase">Phase 2 — Now</div>
-        <div class="timeline-date">Q1 2026</div>
-        <div class="timeline-title">Investment Round & Demo Platform</div>
-        <div class="timeline-desc">
-          After a year behind closed doors, we're making the technology visible
-          to investors and early partners. This demo platform showcases real outputs
-          from our system — not mockups, not renders, not outsourced models. We're
-          seeking investment to fund infrastructure scaling, compute resources,
-          and the transition from research prototype to commercial product.
-        </div>
-        <div class="timeline-goals">
-          <span class="timeline-goal">Demo platform live</span>
-          <span class="timeline-goal">Token launch</span>
-          <span class="timeline-goal">Community building</span>
-          <span class="timeline-goal">Investor outreach</span>
-          <span class="timeline-goal">Technical whitepaper</span>
+      <div class="rm-item now">
+        <div class="rm-num">02</div>
+        <div class="rm-body">
+          <div class="rm-phase">Now</div>
+          <div class="rm-date">Q1 2026</div>
+          <h3>Investment Round</h3>
+          <p>Demo platform live. Technology visible to investors. Seeking funding for infrastructure scaling, compute, and the transition from prototype to commercial product.</p>
         </div>
       </div>
-
-      <div class="timeline-item">
-        <div class="timeline-dot"></div>
-        <div class="timeline-phase">Phase 3</div>
-        <div class="timeline-date">Q2 — Q3 2026</div>
-        <div class="timeline-title">Closed Beta & Creator Program</div>
-        <div class="timeline-desc">
-          Token holders and selected creators get early access to the generation
-          API. Direct integration with Unity, Unreal Engine, and Blender.
-          Real-world production testing with indie studios and freelance artists.
-          Feedback loop drives rapid iteration on output quality and format support.
-        </div>
-        <div class="timeline-goals">
-          <span class="timeline-goal">Beta access for holders</span>
-          <span class="timeline-goal">API private release</span>
-          <span class="timeline-goal">Engine plugins (Unity, Unreal)</span>
-          <span class="timeline-goal">Creator partnerships</span>
+      <div class="rm-item">
+        <div class="rm-num">03</div>
+        <div class="rm-body">
+          <div class="rm-phase">Next</div>
+          <div class="rm-date">Q2 — Q3 2026</div>
+          <h3>Closed Beta</h3>
+          <p>Early access to generation API. Unity, Unreal, Blender plugins. Production testing with indie studios. Rapid iteration on output quality.</p>
         </div>
       </div>
-
-      <div class="timeline-item">
-        <div class="timeline-dot"></div>
-        <div class="timeline-phase">Phase 4</div>
-        <div class="timeline-date">Q4 2026 — Q1 2027</div>
-        <div class="timeline-title">Public Platform & Ecosystem Growth</div>
-        <div class="timeline-desc">
-          Open access to the full generation platform. Token utility integrated
-          into the product — generation credits, premium features, and governance.
-          Animation module public release. Community marketplace for custom-trained
-          style models. Enterprise licensing for studios and production houses.
-        </div>
-        <div class="timeline-goals">
-          <span class="timeline-goal">Public platform launch</span>
-          <span class="timeline-goal">Token utility live</span>
-          <span class="timeline-goal">Animation generation</span>
-          <span class="timeline-goal">Style marketplace</span>
-          <span class="timeline-goal">Enterprise tier</span>
+      <div class="rm-item">
+        <div class="rm-num">04</div>
+        <div class="rm-body">
+          <div class="rm-phase">Future</div>
+          <div class="rm-date">Q4 2026 — Q1 2027</div>
+          <h3>Public Platform</h3>
+          <p>Full platform access. Token utility — generation credits, premium features, governance. Animation module. Style marketplace. Enterprise tier.</p>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ======== FUTURE / IMPACT ======== -->
-<section class="future" id="future">
+<!-- BOTTOM CTA — different from typical "impact" section -->
+<section class="cta-section" id="future">
   <div class="container">
-    <div class="future-header reveal">
-      <p class="section-label">Impact</p>
-      <h2 class="section-title">Why this matters</h2>
-      <p class="section-desc">
-        The technology works. The models on this page prove it. What we need
-        is investment to scale the infrastructure and bring it to market.
-      </p>
-    </div>
-
-    <div class="future-grid reveal">
-      <div class="future-card">
-        <div class="future-icon">
-          <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>
-          </svg>
-        </div>
-        <h3>The Technology is Real</h3>
+    <div class="cta-block reveal">
+      <div class="cta-left">
+        <h2>The technology works.<br>We need capital to ship it.</h2>
         <p>
-          This isn't a concept deck or a roadmap without substance.
-          Every 3D model on this site was generated by our system from
-          a single reference image. Twelve months of R&D produced
-          a working prototype — not a pitch, but a product.
+          Every 3D model on this site was generated from a single image.
+          Games, film, e-commerce — every sector needs 3D at scale.
+          We've built the engine. Now we need the fuel.
         </p>
+        <a href="#roadmap" class="btn-fill">View Roadmap</a>
       </div>
-
-      <div class="future-card">
-        <div class="future-icon">
-          <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>
-          </svg>
+      <div class="cta-right">
+        <div class="cta-stat">
+          <div class="cta-stat-num">12</div>
+          <div class="cta-stat-label">months of R&D</div>
         </div>
-        <h3>The Token Funds the Launch</h3>
-        <p>
-          Scaling AI infrastructure — GPU clusters, API servers, global
-          distribution — requires capital. The token gives our community
-          a direct path to participate in that growth. Holders get early
-          access, generation credits, and governance over the platform's
-          direction.
-        </p>
-      </div>
-
-      <div class="future-card">
-        <div class="future-icon">
-          <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
-          </svg>
+        <div class="cta-stat">
+          <div class="cta-stat-num">1</div>
+          <div class="cta-stat-label">image required</div>
         </div>
-        <h3>The Market is Waiting</h3>
-        <p>
-          Games, film, e-commerce, metaverse — every sector needs 3D content
-          at scale. The companies that solve automated 3D generation will
-          define the next decade of digital creation. We've built the engine.
-          Now we need the fuel to ship it.
-        </p>
+        <div class="cta-stat">
+          <div class="cta-stat-num">0</div>
+          <div class="cta-stat-label">manual cleanup</div>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ======== FOOTER ======== -->
+<!-- FOOTER -->
 <footer class="footer">
   <div class="container">
     <div class="footer-inner">
-      <div class="footer-logo">
-        <span class="dot"></span>
-        Neuravox
-      </div>
-      <p class="footer-copy">&copy; 2026 Neuravox Technologies. All rights reserved.</p>
+      <div class="footer-logo"><span class="dot"></span> Neuravox</div>
+      <p class="footer-copy">&copy; 2026 Neuravox Technologies</p>
       <ul class="footer-links">
-        <li><a href="#about">Vision</a></li>
-        <li><a href="#showcase">Technology</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#showcase">Tech</a></li>
         <li><a href="#roadmap">Roadmap</a></li>
       </ul>
     </div>

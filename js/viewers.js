@@ -113,7 +113,7 @@ document.querySelectorAll('.showcase-tab').forEach(function(tab) {
 });
 
 // --- Video autoplay on hover ---
-document.querySelectorAll('.video-card').forEach(function(card) {
+document.querySelectorAll('.vid-item').forEach(function(card) {
   var video = card.querySelector('video');
   if (!video) return;
   card.addEventListener('mouseenter', function() { video.play(); });
