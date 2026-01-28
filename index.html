@@ -7,6 +7,163 @@
   <meta name="description" content="From reference to reality. Neuravox transforms 2D concepts into production-ready 3D models and animations using proprietary neural architecture.">
   <link rel="stylesheet" href="css/styles.css">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='40' fill='%2300a8ff'/></svg>">
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+    }
+  }
+  </script>
+  <style>
+    /* 3D viewer canvases */
+    .viewer-canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+      cursor: grab;
+    }
+    .viewer-canvas:active { cursor: grabbing; }
+
+    /* Showcase pairs */
+    .showcase-pair {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 32px;
+      align-items: center;
+      margin-bottom: 48px;
+    }
+    .showcase-pair .showcase-card-body {
+      min-height: 320px;
+    }
+    .showcase-pair .showcase-card-body img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      position: absolute;
+      inset: 0;
+      padding: 16px;
+    }
+    .pair-label {
+      text-align: center;
+      margin-bottom: 12px;
+      font-size: 13px;
+      color: var(--text-dim);
+      font-weight: 500;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    /* Tabs for showcase */
+    .showcase-tabs {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 48px;
+    }
+    .showcase-tab {
+      padding: 10px 24px;
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      background: var(--bg-card);
+      color: var(--text-muted);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    .showcase-tab:hover { border-color: var(--border-light); color: var(--text); }
+    .showcase-tab.active {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: var(--accent-dim);
+    }
+    .showcase-pair-wrapper { display: none; }
+    .showcase-pair-wrapper.active { display: block; }
+
+    /* Video cards real */
+    .video-card-body video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      position: absolute;
+      inset: 0;
+    }
+
+    /* Gallery with 3D */
+    .gallery-grid-new {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+    }
+    .gallery-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      transition: border-color 0.3s;
+    }
+    .gallery-card:hover { border-color: var(--border-light); }
+    .gallery-card-viewer {
+      height: 350px;
+      position: relative;
+      background: var(--bg);
+    }
+    .gallery-card-info {
+      padding: 20px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 1px solid var(--border);
+    }
+    .gallery-card-title {
+      font-family: var(--font-display);
+      font-size: 16px;
+      font-weight: 600;
+    }
+    .gallery-card-tag {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 5px 12px;
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      color: var(--text-muted);
+    }
+    .gallery-card-ref {
+      height: 200px;
+      position: relative;
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--bg);
+    }
+    .gallery-card-ref img {
+      max-height: 100%;
+      max-width: 100%;
+      object-fit: contain;
+      padding: 12px;
+    }
+    .gallery-card-ref-label {
+      position: absolute;
+      top: 8px;
+      left: 12px;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--text-dim);
+    }
+
+    @media (max-width: 1024px) {
+      .showcase-pair { grid-template-columns: 1fr; }
+      .showcase-pair .showcase-arrow { transform: rotate(90deg); padding: 16px 0; }
+    }
+    @media (max-width: 768px) {
+      .gallery-grid-new { grid-template-columns: 1fr; }
+      .showcase-tabs { flex-wrap: wrap; }
+    }
+  </style>
 </head>
 <body>
 
@@ -91,9 +248,8 @@
       </div>
 
       <div class="reveal">
-        <!-- Replace with actual image/video: concept art or system diagram -->
-        <div class="about-visual">
-          <span class="placeholder-text">[ Platform Overview — Image / Video ]</span>
+        <div class="about-visual" id="hero-viewer" style="min-height: 380px;">
+          <!-- 3D model viewer for hero/about section -->
         </div>
       </div>
     </div>
@@ -127,81 +283,165 @@
       </p>
     </div>
 
-    <!-- Before / After Process -->
-    <div class="showcase-process reveal">
-      <!-- INPUT -->
-      <div class="showcase-card">
-        <div class="showcase-card-header">
-          <span class="showcase-card-tag">Input</span>
-          <span class="showcase-card-label">— Reference image</span>
+    <!-- Tabs -->
+    <div class="showcase-tabs reveal">
+      <button class="showcase-tab active" data-tab="luffy">Luffy</button>
+      <button class="showcase-tab" data-tab="buzz">Buzz Lightyear</button>
+      <button class="showcase-tab" data-tab="goku">Goku Chibi</button>
+      <button class="showcase-tab" data-tab="mickey">Mickey Mouse</button>
+    </div>
+
+    <!-- Luffy -->
+    <div class="showcase-pair-wrapper active" data-content="luffy">
+      <div class="showcase-pair reveal">
+        <div class="showcase-card">
+          <div class="showcase-card-header">
+            <span class="showcase-card-tag">Input</span>
+            <span class="showcase-card-label">— Reference image</span>
+          </div>
+          <div class="showcase-card-body">
+            <img src="assets/images/luffy-ref.webp" alt="Luffy reference">
+          </div>
         </div>
-        <div class="showcase-card-body">
-          <!-- Replace: user-uploaded reference image -->
-          <span class="placeholder-text">[ Reference Image — 2D Concept Art ]</span>
+        <div class="showcase-arrow">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+          <span>Neuravox AI</span>
+        </div>
+        <div class="showcase-card">
+          <div class="showcase-card-header">
+            <span class="showcase-card-tag">Output</span>
+            <span class="showcase-card-label">— Generated 3D model</span>
+          </div>
+          <div class="showcase-card-body">
+            <canvas class="viewer-canvas" id="viewer-luffy"></canvas>
+          </div>
         </div>
       </div>
+    </div>
 
-      <!-- Arrow -->
-      <div class="showcase-arrow">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-          <path d="M5 12h14M12 5l7 7-7 7"/>
-        </svg>
-        <span>Neuravox AI</span>
-      </div>
-
-      <!-- OUTPUT -->
-      <div class="showcase-card">
-        <div class="showcase-card-header">
-          <span class="showcase-card-tag">Output</span>
-          <span class="showcase-card-label">— Generated 3D model</span>
+    <!-- Buzz -->
+    <div class="showcase-pair-wrapper" data-content="buzz">
+      <div class="showcase-pair reveal visible">
+        <div class="showcase-card">
+          <div class="showcase-card-header">
+            <span class="showcase-card-tag">Input</span>
+            <span class="showcase-card-label">— Reference image</span>
+          </div>
+          <div class="showcase-card-body">
+            <img src="assets/images/buzz-ref.jpg" alt="Buzz Lightyear reference">
+          </div>
         </div>
-        <div class="showcase-card-body">
-          <!-- Replace: 3D model viewer or rendered image of generated model -->
-          <span class="placeholder-text">[ 3D Model — Rendered Output ]</span>
+        <div class="showcase-arrow">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+          <span>Neuravox AI</span>
+        </div>
+        <div class="showcase-card">
+          <div class="showcase-card-header">
+            <span class="showcase-card-tag">Output</span>
+            <span class="showcase-card-label">— Generated 3D model</span>
+          </div>
+          <div class="showcase-card-body">
+            <canvas class="viewer-canvas" id="viewer-buzz"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Goku -->
+    <div class="showcase-pair-wrapper" data-content="goku">
+      <div class="showcase-pair reveal visible">
+        <div class="showcase-card">
+          <div class="showcase-card-header">
+            <span class="showcase-card-tag">Input</span>
+            <span class="showcase-card-label">— Reference image</span>
+          </div>
+          <div class="showcase-card-body">
+            <img src="assets/images/goku-ref.jpg" alt="Goku Chibi reference">
+          </div>
+        </div>
+        <div class="showcase-arrow">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+          <span>Neuravox AI</span>
+        </div>
+        <div class="showcase-card">
+          <div class="showcase-card-header">
+            <span class="showcase-card-tag">Output</span>
+            <span class="showcase-card-label">— Generated 3D model</span>
+          </div>
+          <div class="showcase-card-body">
+            <canvas class="viewer-canvas" id="viewer-goku"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mickey -->
+    <div class="showcase-pair-wrapper" data-content="mickey">
+      <div class="showcase-pair reveal visible">
+        <div class="showcase-card">
+          <div class="showcase-card-header">
+            <span class="showcase-card-tag">Input</span>
+            <span class="showcase-card-label">— Reference image</span>
+          </div>
+          <div class="showcase-card-body">
+            <img src="assets/images/mickey-ref.png" alt="Mickey Mouse reference">
+          </div>
+        </div>
+        <div class="showcase-arrow">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+          <span>Neuravox AI</span>
+        </div>
+        <div class="showcase-card">
+          <div class="showcase-card-header">
+            <span class="showcase-card-tag">Output</span>
+            <span class="showcase-card-label">— Generated 3D model</span>
+          </div>
+          <div class="showcase-card-body">
+            <canvas class="viewer-canvas" id="viewer-mickey"></canvas>
+          </div>
         </div>
       </div>
     </div>
 
     <!-- Animation Videos -->
-    <h3 style="text-align:center; font-family: var(--font-display); font-size: 20px; font-weight: 600; margin-bottom: 32px; letter-spacing: -0.5px;" class="reveal">Generated Animations</h3>
+    <h3 style="text-align:center; font-family: var(--font-display); font-size: 20px; font-weight: 600; margin-bottom: 32px; margin-top: 40px; letter-spacing: -0.5px;" class="reveal">Generated Animations</h3>
 
     <div class="showcase-videos reveal">
       <div class="video-card">
         <div class="video-card-body">
-          <!-- Replace: video of idle animation -->
-          <div class="play-icon">
-            <svg viewBox="0 0 24 24"><polygon points="8,5 20,12 8,19"/></svg>
-          </div>
+          <video src="assets/videos/demo1.mp4" muted loop playsinline></video>
         </div>
         <div class="video-card-info">
-          <div class="video-card-title">Idle Animation</div>
-          <div class="video-card-desc">Auto-generated idle cycle from single reference</div>
+          <div class="video-card-title">Character Generation</div>
+          <div class="video-card-desc">Full 3D model from single 2D reference</div>
         </div>
       </div>
 
       <div class="video-card">
         <div class="video-card-body">
-          <!-- Replace: video of walk cycle -->
-          <div class="play-icon">
-            <svg viewBox="0 0 24 24"><polygon points="8,5 20,12 8,19"/></svg>
-          </div>
+          <video src="assets/videos/demo2.mp4" muted loop playsinline></video>
         </div>
         <div class="video-card-info">
-          <div class="video-card-title">Walk Cycle</div>
-          <div class="video-card-desc">Procedural locomotion with weight transfer</div>
+          <div class="video-card-title">Spatial Reconstruction</div>
+          <div class="video-card-desc">Real-time mesh generation and texturing</div>
         </div>
       </div>
 
       <div class="video-card">
         <div class="video-card-body">
-          <!-- Replace: video of action animation -->
-          <div class="play-icon">
-            <svg viewBox="0 0 24 24"><polygon points="8,5 20,12 8,19"/></svg>
-          </div>
+          <video src="assets/videos/demo3.mp4" muted loop playsinline></video>
         </div>
         <div class="video-card-info">
-          <div class="video-card-title">Action Sequence</div>
-          <div class="video-card-desc">Complex multi-joint articulated motion</div>
+          <div class="video-card-title">Multi-angle Output</div>
+          <div class="video-card-desc">Complete 360-degree asset review</div>
         </div>
       </div>
     </div>
@@ -220,39 +460,57 @@
       </p>
     </div>
 
-    <div class="gallery-grid reveal">
-      <!-- Replace each item with actual rendered images of generated 3D models -->
-      <div class="gallery-item">
-        <span class="placeholder-text">[ Project 1 ]</span>
-        <div class="gallery-item-overlay"><span>Character — Humanoid</span></div>
+    <div class="gallery-grid-new reveal">
+      <!-- Luffy -->
+      <div class="gallery-card">
+        <div class="gallery-card-viewer" id="gallery-luffy"></div>
+        <div class="gallery-card-info">
+          <span class="gallery-card-title">Luffy — One Piece</span>
+          <span class="gallery-card-tag">Character</span>
+        </div>
+        <div class="gallery-card-ref">
+          <span class="gallery-card-ref-label">Reference Input</span>
+          <img src="assets/images/luffy-ref.webp" alt="Luffy reference">
+        </div>
       </div>
-      <div class="gallery-item">
-        <span class="placeholder-text">[ Project 2 ]</span>
-        <div class="gallery-item-overlay"><span>Creature — Organic</span></div>
+
+      <!-- Buzz -->
+      <div class="gallery-card">
+        <div class="gallery-card-viewer" id="gallery-buzz"></div>
+        <div class="gallery-card-info">
+          <span class="gallery-card-title">Buzz Lightyear — Toy Story</span>
+          <span class="gallery-card-tag">Character</span>
+        </div>
+        <div class="gallery-card-ref">
+          <span class="gallery-card-ref-label">Reference Input</span>
+          <img src="assets/images/buzz-ref.jpg" alt="Buzz reference">
+        </div>
       </div>
-      <div class="gallery-item">
-        <span class="placeholder-text">[ Project 3 ]</span>
-        <div class="gallery-item-overlay"><span>Vehicle — Hard Surface</span></div>
+
+      <!-- Goku -->
+      <div class="gallery-card">
+        <div class="gallery-card-viewer" id="gallery-goku"></div>
+        <div class="gallery-card-info">
+          <span class="gallery-card-title">Goku Chibi — Dragon Ball</span>
+          <span class="gallery-card-tag">Stylized</span>
+        </div>
+        <div class="gallery-card-ref">
+          <span class="gallery-card-ref-label">Reference Input</span>
+          <img src="assets/images/goku-ref.jpg" alt="Goku reference">
+        </div>
       </div>
-      <div class="gallery-item">
-        <span class="placeholder-text">[ Project 4 ]</span>
-        <div class="gallery-item-overlay"><span>Environment — Prop</span></div>
-      </div>
-      <div class="gallery-item">
-        <span class="placeholder-text">[ Project 5 ]</span>
-        <div class="gallery-item-overlay"><span>Weapon — Detailed</span></div>
-      </div>
-      <div class="gallery-item">
-        <span class="placeholder-text">[ Project 6 ]</span>
-        <div class="gallery-item-overlay"><span>Architecture — Structure</span></div>
-      </div>
-      <div class="gallery-item">
-        <span class="placeholder-text">[ Project 7 ]</span>
-        <div class="gallery-item-overlay"><span>Character — Stylized</span></div>
-      </div>
-      <div class="gallery-item">
-        <span class="placeholder-text">[ Project 8 ]</span>
-        <div class="gallery-item-overlay"><span>Creature — Fantasy</span></div>
+
+      <!-- Mickey -->
+      <div class="gallery-card">
+        <div class="gallery-card-viewer" id="gallery-mickey"></div>
+        <div class="gallery-card-info">
+          <span class="gallery-card-title">Mickey Mouse — Disney</span>
+          <span class="gallery-card-tag">Iconic</span>
+        </div>
+        <div class="gallery-card-ref">
+          <span class="gallery-card-ref-label">Reference Input</span>
+          <img src="assets/images/mickey-ref.png" alt="Mickey reference">
+        </div>
       </div>
     </div>
   </div>
@@ -271,7 +529,6 @@
     </div>
 
     <div class="timeline reveal">
-      <!-- Phase 1 — Completed -->
       <div class="timeline-item completed">
         <div class="timeline-dot"></div>
         <div class="timeline-phase">Phase 1</div>
@@ -291,7 +548,6 @@
         </div>
       </div>
 
-      <!-- Phase 2 — Active -->
       <div class="timeline-item active">
         <div class="timeline-dot"></div>
         <div class="timeline-phase">Phase 2</div>
@@ -311,7 +567,6 @@
         </div>
       </div>
 
-      <!-- Phase 3 -->
       <div class="timeline-item">
         <div class="timeline-dot"></div>
         <div class="timeline-phase">Phase 3</div>
@@ -331,7 +586,6 @@
         </div>
       </div>
 
-      <!-- Phase 4 -->
       <div class="timeline-item">
         <div class="timeline-dot"></div>
         <div class="timeline-phase">Phase 4</div>
@@ -434,5 +688,6 @@
 </footer>
 
 <script src="js/main.js"></script>
+<script type="module" src="js/viewers.js"></script>
 </body>
 </html>
